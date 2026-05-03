@@ -1,0 +1,108 @@
+# =========================
+# 🔹 Python / AI Backend
+# =========================
+venv/
+
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+
+# FastAPI / Uvicorn logs
+*.log
+
+# Model files (VERY IMPORTANT if large)
+*.h5
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.joblib
+*.bin
+*.keras
+*.ckpt
+*.model
+*.csv
+*.json
+
+# =========================
+# 🔹 Environment Variables
+# =========================
+.env
+.env.*
+*.env
+.venv/
+venv/
+
+# =========================
+# 🔹 Node / React Frontend
+# =========================
+node_modules/
+build/
+dist/
+.next/
+out/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# 🔹 OS / System Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# 🔹 IDE / Editor Files
+# =========================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# =========================
+# 🔹 Project Uploads & Generated Files
+# =========================
+uploads/
+uploaded_accessories/
+temp_uploads/
+generated/
+
+# =========================
+# 🔹 Testing & Coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+coverage/
+
+# =========================
+# 🔹 FAISS Indexes & Vector DBs
+# =========================
+*.faiss
+vector_db/
+
+# =========================
+# 🔹 Jupyter Notebooks
+# =========================
+.ipynb_checkpoints/
+*.ipynb
+
+# =========================
+# 🔹 Misc
+# =========================
+.cache/
+tmp/
+temp/
+.history/
+.vscode-server/
+*.tmp
+*.swp
+*.swo
