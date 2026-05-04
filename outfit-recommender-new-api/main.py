@@ -380,41 +380,112 @@ PATTERN_RULES: dict[tuple, list[str]] = {
     ("inverted_triangle", "party"): ["solid", "small print", "floral"],
 }
 
+# def get_pattern(body: str, category: str) -> str:
+#     return PATTERN_RULES.get((body, category), ["solid"])[0]
+
 def get_pattern(body: str, category: str) -> str:
-    return PATTERN_RULES.get((body, category), ["solid"])[0]
+    patterns = PATTERN_RULES.get((body, category), ["solid"])
+
+    # reduce chance of solid pattern
+    weights = []
+    for p in patterns:
+        if p == "solid":
+            weights.append(0.2)   # lower chance
+        else:
+            weights.append(0.4)   # higher chance
+
+    return random.choices(patterns, weights=weights)[0]
 
 # ═════════════════════════════════════════════════════════
 # OUTFIT & COLOUR RANKING
 # ═════════════════════════════════════════════════════════
-def rank_and_sample_outfit(body: str, category: str, top_k: int = 4, deterministic: bool = False):
+# def rank_and_sample_outfit(body: str, category: str, top_k: int = 4, deterministic: bool = False):
+#     # Check if ranker is available
+#     if outfit_ranker is None:
+#         logger.warning("Outfit ranker unavailable - using fallback recommendation")
+#         # Fallback: Return random outfit from catalogue
+#         outfit = np.random.choice(ALL_OUTFITS)
+#         ranked_list = [{"outfit": o, "score": 0.5, "rank": i+1, "fallback": True} 
+#                        for i, o in enumerate(ALL_OUTFITS)]
+#         return outfit, 0.5, ranked_list
+    
+#     b = int(le_body.transform([body])[0])
+#     c = int(le_cat.transform([category])[0])
+#     rows = pd.DataFrame(
+#         [[b, c, int(le_outfit.transform([o])[0])] for o in ALL_OUTFITS],
+#         columns=OUTFIT_FEATURES,
+#     )
+#     scores = outfit_ranker.predict(rows)
+#     ranked = sorted(zip(ALL_OUTFITS, scores.tolist()), key=lambda x: x[1], reverse=True)
+#     ranked_list = [{"outfit": o, "score": round(sc, 4), "rank": i+1}
+#                    for i, (o, sc) in enumerate(ranked)]
+    
+#     if deterministic:
+#         return ranked[0][0], round(ranked[0][1], 4), ranked_list
+    
+#     top = ranked[:top_k]
+#     names, sc_vals = zip(*top)
+#     sc_arr = np.array(sc_vals) - min(sc_vals) + 0.01
+#     probs = sc_arr / sc_arr.sum()
+#     idx = int(np.random.choice(len(names), p=probs))
+#     return names[idx], round(float(sc_vals[idx]), 4), ranked_list
+def rank_and_sample_outfit(body: str, category: str, top_k: int = 6, deterministic: bool = False):
     # Check if ranker is available
     if outfit_ranker is None:
         logger.warning("Outfit ranker unavailable - using fallback recommendation")
-        # Fallback: Return random outfit from catalogue
+
         outfit = np.random.choice(ALL_OUTFITS)
-        ranked_list = [{"outfit": o, "score": 0.5, "rank": i+1, "fallback": True} 
-                       for i, o in enumerate(ALL_OUTFITS)]
+        ranked_list = [
+            {
+                "outfit": o,
+                "score": 0.5,
+                "rank": i + 1,
+                "fallback": True
+            }
+            for i, o in enumerate(ALL_OUTFITS)
+        ]
         return outfit, 0.5, ranked_list
-    
+
     b = int(le_body.transform([body])[0])
     c = int(le_cat.transform([category])[0])
+
     rows = pd.DataFrame(
         [[b, c, int(le_outfit.transform([o])[0])] for o in ALL_OUTFITS],
         columns=OUTFIT_FEATURES,
     )
+
     scores = outfit_ranker.predict(rows)
-    ranked = sorted(zip(ALL_OUTFITS, scores.tolist()), key=lambda x: x[1], reverse=True)
-    ranked_list = [{"outfit": o, "score": round(sc, 4), "rank": i+1}
-                   for i, (o, sc) in enumerate(ranked)]
-    
+
+    ranked = sorted(
+        zip(ALL_OUTFITS, scores.tolist()),
+        key=lambda x: x[1],
+        reverse=True
+    )
+
+    ranked_list = [
+        {
+            "outfit": o,
+            "score": round(sc, 4),
+            "rank": i + 1
+        }
+        for i, (o, sc) in enumerate(ranked)
+    ]
+
+    # deterministic mode → always pick best
     if deterministic:
         return ranked[0][0], round(ranked[0][1], 4), ranked_list
-    
+
+    # NEW SAMPLING LOGIC
     top = ranked[:top_k]
     names, sc_vals = zip(*top)
-    sc_arr = np.array(sc_vals) - min(sc_vals) + 0.01
+
+    # Temperature scaling for diversity
+    temperature = 2.0
+    sc_arr = np.exp(np.array(sc_vals) / temperature)
     probs = sc_arr / sc_arr.sum()
+
     idx = int(np.random.choice(len(names), p=probs))
+
     return names[idx], round(float(sc_vals[idx]), 4), ranked_list
 
 def rank_and_sample_colour(skin: str, top_k: int = 3):
@@ -650,7 +721,7 @@ async def recommend(
     # 3. Rank & sample outfit
     try:
         outfit, outfit_score, outfit_ranking = rank_and_sample_outfit(
-            body_pred, category, top_k=4, deterministic=consistency_mode
+            body_pred, category, top_k=6, deterministic=consistency_mode
         )
         outfit_info = parse_outfit(outfit)
     except Exception as e:

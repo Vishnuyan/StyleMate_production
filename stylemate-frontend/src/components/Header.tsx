@@ -44,7 +44,7 @@ export default function Header() {
             <Link to="/prediction" className="text-sm font-medium hover:text-gold transition-colors">Recommend</Link>
             <Link to="/accessories" className="text-sm font-medium hover:text-gold transition-colors">Accessories</Link>
             <Link to="/Wardrobe" className="text-sm font-medium hover:text-gold transition-colors">Wardrobe</Link>
-            <Link to="/outfit" className="text-sm font-medium hover:text-gold transition-colors">Outfit Recommendtion</Link>
+            <Link to="/outfit" className="text-sm font-medium hover:text-gold transition-colors">Theme & Occasion</Link>
             <Link to="/about" className="text-sm font-medium hover:text-gold transition-colors">About</Link>
             <Link to="/contact" className="text-sm font-medium hover:text-gold transition-colors">Contact</Link>
             
@@ -85,7 +85,7 @@ export default function Header() {
           <Link to="/prediction" className="block text-lg font-medium" onClick={() => setIsOpen(false)}>Recommend</Link>
           <Link to="/accessories" className="text-sm font-medium hover:text-gold transition-colors">Accessories Suggestion</Link>
           <Link to="/Wardrobe" className="block text-lg font-medium" onClick={() => setIsOpen(false)}>Wardrobe</Link>
-          <Link to="/outfit" className="block text-lg font-medium" onClick={() => setIsOpen(false)}>Outfit Recommendation</Link>
+          <Link to="/outfit" className="block text-lg font-medium" onClick={() => setIsOpen(false)}>Theme & Occasion</Link>
           <Link to="/about" className="block text-lg font-medium" onClick={() => setIsOpen(false)}>About</Link>
           <Link to="/contact" className="block text-lg font-medium" onClick={() => setIsOpen(false)}>Contact</Link>
           {token ? (

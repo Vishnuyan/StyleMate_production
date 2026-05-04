@@ -13,13 +13,13 @@ from efficientnet_pytorch import EfficientNet
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 MODEL_PATH = os.path.join(BASE_DIR, "../models/neckline/best_neckline_b0.pth")
-CSV_PATH = r"C:\Users\User\Documents\Accessories Suggestion\Neckline\dataset\train\_classes.csv"
+#CSV_PATH = r"C:\Users\User\Documents\Accessories Suggestion\Neckline\dataset\train\_classes.csv"
 
 print(f"[NECKLINE] Module loading...", file=sys.stderr, flush=True)
 print(f"[NECKLINE] MODEL_PATH: {MODEL_PATH}", file=sys.stderr, flush=True)
-print(f"[NECKLINE] CSV_PATH: {CSV_PATH}", file=sys.stderr, flush=True)
+# print(f"[NECKLINE] CSV_PATH: {CSV_PATH}", file=sys.stderr, flush=True)
 print(f"[NECKLINE] Model exists: {os.path.exists(MODEL_PATH)}", file=sys.stderr, flush=True)
-print(f"[NECKLINE] CSV exists: {os.path.exists(CSV_PATH)}", file=sys.stderr, flush=True)
+# print(f"[NECKLINE] CSV exists: {os.path.exists(CSV_PATH)}", file=sys.stderr, flush=True)
 print(f"[NECKLINE] Torch: {torch.__version__}", file=sys.stderr, flush=True)
 
 # ----------------------------------------------------
@@ -31,20 +31,20 @@ print(f"[NECKLINE] Using device: {device}", file=sys.stderr, flush=True)
 # ----------------------------------------------------
 # Load class names from CSV
 # ----------------------------------------------------
-if not os.path.exists(CSV_PATH):
-    raise FileNotFoundError(f"CSV file not found: {CSV_PATH}")
+# if not os.path.exists(CSV_PATH):
+#     raise FileNotFoundError(f"CSV file not found: {CSV_PATH}")
 
-df = pd.read_csv(CSV_PATH)
+# df = pd.read_csv(CSV_PATH)
 
-CLASSES = [
-    col for col in df.columns
-    if col.lower() not in ["label", "filename"]
-]
+# CLASSES = [
+#     col for col in df.columns
+#     if col.lower() not in ["label", "filename"]
+# ]
 
-if len(CLASSES) == 0:
-    raise ValueError("No class names found in CSV.")
+# if len(CLASSES) == 0:
+#     raise ValueError("No class names found in CSV.")
 
-print(f"[NECKLINE] Classes: {CLASSES}", file=sys.stderr, flush=True)
+# print(f"[NECKLINE] Classes: {CLASSES}", file=sys.stderr, flush=True)
 
 # ----------------------------------------------------
 # Globals

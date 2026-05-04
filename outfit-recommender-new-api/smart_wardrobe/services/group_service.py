@@ -150,7 +150,7 @@ def match_multi_user_outfit(user_ids, context):
     # Fetch wardrobes from MongoDB
     all_user_wardrobes = {}
     for uid in user_ids:
-        items = list(wardrobe_collection.find({"user_id": uid}))
+        items = list(wardrobe_collection.find({"userId": uid}))
         if not items:
             continue
         # Pre-filter

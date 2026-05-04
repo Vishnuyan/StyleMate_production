@@ -29,11 +29,17 @@ class TripResponse(BaseModel):
     daily_plan: List[TripDay]
     packing_list: List[Dict[str, str]]
 
-class GroupCoordination(BaseModel):
-    user_id: str
-    recommended_outfit: Outfit
+class GroupMatch(BaseModel):
+    userA: Dict[str, Any]
+    userB: Dict[str, Any]
+    score: float
+
+class GroupOutfitItem(BaseModel):
+    user: str
+    item: Dict[str, Any]
 
 class GroupResponse(BaseModel):
-    theme: str
-    coordinated_outfits: List[GroupCoordination]
-    harmony_reason: str
+    type: str  # "couple" or "group"
+    matches: Optional[List[GroupMatch]] = None  # For couple matching
+    theme: Optional[str] = None  # For group matching
+    outfits: Optional[List[List[GroupOutfitItem]]] = None  # For group matching
