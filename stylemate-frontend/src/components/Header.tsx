@@ -44,17 +44,17 @@ export default function Header() {
             <Link to="/prediction" className="text-sm font-medium hover:text-gold transition-colors">Recommend</Link>
             <Link to="/accessories" className="text-sm font-medium hover:text-gold transition-colors">Accessories</Link>
             <Link to="/Wardrobe" className="text-sm font-medium hover:text-gold transition-colors">Wardrobe</Link>
-            <Link to="/outfit" className="text-sm font-medium hover:text-gold transition-colors">Theme & Occasion</Link>
+            <Link to="/outfit" className="text-sm font-medium hover:text-gold transition-colors">Occassion & Theme</Link>
             <Link to="/about" className="text-sm font-medium hover:text-gold transition-colors">About</Link>
             <Link to="/contact" className="text-sm font-medium hover:text-gold transition-colors">Contact</Link>
-            
+
             {token ? (
               <div className="flex items-center space-x-4 ml-4">
                 <Link to="/dashboard" className="flex items-center space-x-2 text-sm font-medium hover:text-gold transition-colors">
                   <User className="h-4 w-4" />
                   <span>{user.name}</span>
                 </Link>
-                <button 
+                <button
                   onClick={handleLogout}
                   className="p-2 hover:text-red-500 transition-colors"
                 >

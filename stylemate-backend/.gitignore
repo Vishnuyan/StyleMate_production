@@ -26,7 +26,12 @@ __pycache__/
 *.ckpt
 *.model
 *.csv
+*.zip
+
+# JSON files (but NOT package config)
 *.json
+!package.json
+!package-lock.json
 
 # =========================
 # 🔹 Environment Variables
@@ -74,6 +79,12 @@ uploads/
 uploaded_accessories/
 temp_uploads/
 generated/
+generated_images/
+
+# =========================
+# 🔹 Large Binary / Archive Files
+# =========================
+*.zip
 
 # =========================
 # 🔹 Testing & Coverage

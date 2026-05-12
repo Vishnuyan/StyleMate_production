@@ -12,7 +12,7 @@ def filter_items_by_context(items, context):
 
     for item in items:
         # Style filter
-        item_style = item.get("style", "").lower()
+        item_style = (item.get("style") or "").lower()
         if style and style != item_style:
             continue
             
@@ -66,7 +66,7 @@ def match_couple(userA_items, userB_items):
     for itemA in userA_items:
         for itemB in userB_items:
             # Avoid matching same categories for variety (Optional but good)
-            if itemA.get("type") == itemB.get("type") and itemA.get("type") not in ["shoes"]:
+            if itemA.get("category") == itemB.get("category") and itemA.get("category") not in ["shoes"]:
                 continue
 
             c_score = color_score(itemA.get("color", ""), itemB.get("color", ""))
@@ -104,7 +104,7 @@ def match_group(all_user_wardrobes, context):
     # Step 1: Define Theme
     all_colors = []
     for user_id, items in all_user_wardrobes.items():
-        all_colors.extend([i.get("color", "").lower() for i in items if i.get("color")])
+        all_colors.extend([(i.get("color") or "").lower() for i in items if i.get("color")])
     
     if all_colors:
         dominant_color = Counter(all_colors).most_common(1)[0][0]
@@ -118,7 +118,7 @@ def match_group(all_user_wardrobes, context):
     group_outfit = []
     for user_id, items in all_user_wardrobes.items():
         # Filter items by theme color OR neutral palette
-        themed_items = [i for i in items if i.get("color", "").lower() == dominant_color or i.get("color", "").lower() in neutral_palette]
+        themed_items = [i for i in items if (i.get("color") or "").lower() == dominant_color or (i.get("color") or "").lower() in neutral_palette]
         
         if not themed_items:
             themed_items = items # Fallback to any item if no theme match
